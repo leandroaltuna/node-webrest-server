@@ -10,7 +10,8 @@ interface Options{
 
 export class Server{
 
-    private app = express();
+    public readonly app = express();
+    private serverListener?: any;
     private readonly port: number;
     private readonly routes: Router;
     private readonly publicPath: string;
@@ -46,10 +47,15 @@ export class Server{
         })
     
 
-        this.app.listen( this.port, () =>{
+        this.serverListener = this.app.listen( this.port, () =>{
             console.log( `Server running on port : ${ this.port }`);
         });
 
+    }
+
+    // Termina el proceso del servidor de express
+    public close(){
+        this.serverListener?.close();
     }
 
 }
